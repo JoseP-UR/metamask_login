@@ -18,7 +18,6 @@ export default function SignInSide() {
   const handleLogin = async (event) => {
     const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 
-    console.log(accounts)
     const address = accounts[0]
     sessionStorage.setItem('userAccount', address)
     router.push('/dashboard')

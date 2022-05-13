@@ -3,33 +3,22 @@ import { Button, TableContainer, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import DoorBack from '@mui/icons-material/DoorBackOutlined';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import AppBar from "../components/AppBar";
 import Drawer from "../components/Drawer";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -62,13 +51,7 @@ export default function Dashboard() {
             setCurrentChainId(chainId)
         });
 
-        ethereum.request({ method: 'eth_getTransactionCount', params: [userAccount, 'latest'] }).then(count => {
-            console.log('transactionCount', Number(count))
-        });
-
         ethereum.request({ method: 'eth_getBlockByNumber', params: ['latest', true] }).then(async (block) => {
-            console.log('block', block)
-            console.log(block.transactions)
             const uniqueHashes = [...new Set(block.transactions.map(tx => tx.hash))]
 
             setTransactionHistory(uniqueHashes)
@@ -98,10 +81,6 @@ export default function Dashboard() {
             ethereum.on('chainChanged', async function (chainId) {
                 setCurrentChainId(chainId)
             });
-
-            ethereum.on('message', (message) => {
-                console.log('message', message)
-            });
         });
 
     }, [])
@@ -128,8 +107,6 @@ export default function Dashboard() {
         }
 
         await ethereum.request({ method: 'eth_sendTransaction', params: [tx] }).then(txHash => {
-            console.log('txHash', txHash)
-
             bootstrap(userAccount)
         });
     }
