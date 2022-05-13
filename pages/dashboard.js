@@ -268,7 +268,7 @@ export default function Dashboard() {
                                                         {transactionHistory.map(tx => (
                                                             <TableRow key={tx}>
                                                                 <TableCell>{tx}</TableCell>
-                                                                <TableCell><Link href={`https://rinkeby.etherscan.io/tx/${tx}`}>URL</Link></TableCell>
+                                                                <TableCell><Link href={`https://rinkeby.etherscan.io/tx/${tx}`} target="_blank">URL</Link></TableCell>
                                                             </TableRow>
                                                         ))}
                                                     </TableBody>
