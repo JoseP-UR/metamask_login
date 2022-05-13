@@ -26,6 +26,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import AppBar from '../components/AppBar';
 import Drawer from "../components/Drawer";
+import { ETHERSCAN_API_TOKEN } from "../constants";
 
 const mdTheme = createTheme();
 
@@ -52,10 +53,8 @@ export default function Dashboard() {
             setCurrentChainId(chainId)
         });
 
-        ethereum.request({ method: 'eth_getBlockByNumber', params: ['latest', true] }).then(async (block) => {
-            const uniqueHashes = [...new Set(block.transactions.map(tx => tx.hash))]
-
-            setTransactionHistory(uniqueHashes)
+        fetch(`https://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=${userAccount}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${ETHERSCAN_API_TOKEN}`).then(async response => await response.json()).then(response => {
+            setTransactionHistory(response.result)
         });
     }
 
@@ -266,9 +265,9 @@ export default function Dashboard() {
                                                     </TableHead>
                                                     <TableBody>
                                                         {transactionHistory.map(tx => (
-                                                            <TableRow key={tx}>
-                                                                <TableCell>{tx}</TableCell>
-                                                                <TableCell><Link href={`https://rinkeby.etherscan.io/tx/${tx}`} target="_blank">URL</Link></TableCell>
+                                                            <TableRow key={tx.hash}>
+                                                                <TableCell>{tx.hash}</TableCell>
+                                                                <TableCell><Link href={`https://rinkeby.etherscan.io/tx/${tx.hash}`} target="_blank">URL</Link></TableCell>
                                                             </TableRow>
                                                         ))}
                                                     </TableBody>
